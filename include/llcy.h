@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- *
- * llcy.h: Lock-less concurrency.                                             *
+ * llcy.h: Lockless concurrency.                                             *
  *                                                                            *
  * Copyright 2024 Marek Miller                                                *
  *                                                                            *
@@ -18,5 +18,7 @@
  * -------------------------------------------------------------------------- */
 #ifndef LLCY_H
 #define LLCY_H
+
+#include "llcy/slot.h"
 
 #endif /* LLCY_H */

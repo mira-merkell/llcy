@@ -1,3 +1,3 @@
 # llcy
 
-Experiments with lock-less concurrency.
+Experiments in lockless concurrency.

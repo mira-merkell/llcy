@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- *
- * llcy.c: Lock-less concurrency.                                             *
+ * llcy.c: Lockless concurrency.                                             *
  *                                                                            *
  * Copyright 2024 Marek Miller                                                *
  *                                                                            *

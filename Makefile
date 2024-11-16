@@ -28,11 +28,22 @@ MKDIR		:= mkdir -p
 # Source code dependencies
 BENCHES	:=
 
-LLCYDIR		:= ./llcy
-LLCYLIBS	:= $(LLCYDIR)/llcy.a $(LLCYDIR)/llcy.so
-LLCYOBJS	:= $(LLCYDIR)/llcy.o
+
+LIBDIR		:= lib
+LIBOBJS		:= $(LIBDIR)/xoshiro256ss.o
+
+$(LIBDIR)/xoshiro256ss.o: $(INCLUDE)/xoshiro256ss.h
+
+
+LLCYDIR		:= llcy
+LLCYLIBS	:= $(LLCYDIR)/llcy.a 					\
+			$(LLCYDIR)/llcy.so
+LLCYOBJS	:= $(LLCYDIR)/llcy.o					\
+			$(LLCYDIR)/slot.o
+
+$(LLCYDIR)/slot.o: $(INCLUDE)/$(LLCYDIR)/slot.h
 $(LLCYOBJS):	$(INCLUDE)/llcy.h
-$(LLCYLIBS):	$(LLCYOBJS) $(INCLUDE)/llcy.h
+$(LLCYLIBS):	$(LLCYOBJS)
 
 $(LLCYDIR)/llcy.a: 
 	ar rcs $@ $^
@@ -40,10 +51,14 @@ $(LLCYDIR)/llcy.a:
 $(LLCYDIR)/llcy.so:
 	$(CC) -shared -o $@ $^
 
+
 TESTDIR		:= ./test
-TESTS		:= $(TESTDIR)/t-llcy
-TESTOBJS	:=
-$(TESTS):	$(TESTDIR)/test.h
+TESTS		:= $(TESTDIR)/t-llcy					\
+			$(TESTDIR)/t-llcy-slot
+
+$(TESTS):	$(TESTDIR)/test.h					\
+			$(LLCYDIR)/llcy.a				\
+			$(LIBOBJS)
 
 # Update flags
 CFLAGS		+= -I$(INCLUDE)
@@ -80,7 +95,7 @@ clean:
 format:
 	@find ./ -name "*.c" 						\
 		-or -name "*.h"						\
-		-or -name "*.cpp" |					\
+		-or -name "*.cpp"  |					\
 		while read f ; do					\
 			clang-format --style=file -i $$f ;		\
 		done

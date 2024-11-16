@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- *
- * test.h: Test macros.                                                       *
+ * slot.h: Memory slot.                                                       *
  *                                                                            *
  * Copyright 2024 Marek Miller                                                *
  *                                                                            *
@@ -16,33 +16,30 @@
  * You should have received a copy of the GNU General Public License along    *
  * with this program.  If not, see <https://www.gnu.org/licenses/>.           *
  * -------------------------------------------------------------------------- */
-#ifndef TEST_H
-#define TEST_H
+#ifndef SLOT_H
+#define SLOT_H
 
 #include <stdatomic.h>
-#include <stddef.h>
-#include <stdio.h>
+#include <stdint.h>
 
-static _Atomic bool TEST_RT = true;
+#define SLOT_MASK 0b1
+#define SLOT_FREE 0
+#define SLOT_WAIT 1
 
-#define TEST_FAIL(fmt, ...)                                                    \
+typedef _Atomic intptr_t slot_t;
+
+#define slot_init(sl, type)                                                    \
 	({                                                                     \
-		fprintf(stderr, "%s:%d %s() FAIL \"" fmt "\"\n", __FILE__,     \
-			__LINE__, __func__ __VA_OPT__(, ) __VA_ARGS__);        \
-		atomic_store(&TEST_RT, false);                                 \
+		static_assert(alignof(type) > SLOT_MASK);                      \
+		atomic_init(sl, 0);                                            \
 	})
 
-#define TEST_STR(a) #a
-#define TEST_XSTR(a) TEST_STR(a)
+#define SLOT_NEW(name, type)                                                   \
+	slot_t name;                                                           \
+	slot_init(&name, type);
 
-#define TEST_ASSERT(expr)                                                      \
-	({                                                                     \
-		if (!(expr))                                                   \
-			TEST_FAIL("assert: %s", TEST_XSTR(expr));              \
-	})
+bool slot_insert(slot_t *sl, void *data);
 
-#define TEST_EQ(a, b) TEST_ASSERT((a) == (b))
+bool slot_remove(slot_t *sl, void **data);
 
-#define TEST_RET() (!TEST_RT)
-
-#endif /* TEST_H */
+#endif /* SLOT_H */
