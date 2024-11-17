@@ -20,13 +20,12 @@
 #define SLOT_H
 
 #include <stdatomic.h>
-#include <stdint.h>
 
 #define SLOT_MASK 0b1
 #define SLOT_FREE 0
 #define SLOT_WAIT 1
 
-typedef _Atomic intptr_t slot_t;
+typedef atomic_intptr_t slot_t;
 
 #define slot_init(sl, type)                                                    \
 	({                                                                     \

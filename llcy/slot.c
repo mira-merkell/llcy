@@ -1,4 +1,5 @@
 #include <stdatomic.h>
+#include <stdint.h>
 
 #include "llcy/slot.h"
 

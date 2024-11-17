@@ -51,13 +51,11 @@ $(LLCYDIR)/llcy.a:
 $(LLCYDIR)/llcy.so:
 	$(CC) -shared -o $@ $^
 
-
 TESTDIR		:= ./test
 TESTS		:= $(TESTDIR)/t-llcy					\
 			$(TESTDIR)/t-llcy-slot
 
-$(TESTS):	$(TESTDIR)/test.h					\
-			$(LLCYDIR)/llcy.a				\
+$(TESTS):	$(LLCYDIR)/llcy.a					\
 			$(LIBOBJS)
 
 # Update flags
