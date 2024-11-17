@@ -54,3 +54,6 @@ dkms.conf
 
 bench/b-*
 test/t-*
+
+.idea
+.vscode

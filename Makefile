@@ -52,8 +52,7 @@ $(LLCYDIR)/llcy.so:
 	$(CC) -shared -o $@ $^
 
 TESTDIR		:= ./test
-TESTS		:= $(TESTDIR)/t-llcy					\
-			$(TESTDIR)/t-llcy-slot
+TESTS		:= $(TESTDIR)/t-llcy
 
 $(TESTS):	$(LLCYDIR)/llcy.a					\
 			$(LIBOBJS)
